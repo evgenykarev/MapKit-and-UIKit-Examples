@@ -17,13 +17,20 @@ extension CLLocationCoordinate2D: CustomStringConvertible {
         
         let minutes = (degreesPart * 60).rounded(.towardZero)
         degreesPart -= minutes / 60
-        
-        let seconds = (degreesPart * 3600).rounded(.towardZero)
-        degreesPart -= seconds / 3600
-        
-        let secondsDecimalPart = (degreesPart * 1000 * 3600).rounded()
-     
-        return "\(Int(degrees))°\(Int(minutes))'\(Int(seconds)).\(Int(secondsDecimalPart))\""
+
+        let seconds = NSNumber(value: degreesPart * 3600)
+
+        let minutesFormatter = NumberFormatter()
+        minutesFormatter.minimumIntegerDigits = 2
+
+        let secondsFormatter = NumberFormatter()
+        secondsFormatter.numberStyle = .decimal
+        secondsFormatter.minimumIntegerDigits = 2
+        secondsFormatter.decimalSeparator = "."
+        secondsFormatter.maximumFractionDigits = 3
+        secondsFormatter.minimumFractionDigits = 3
+
+        return "\(Int(degrees))°\(minutesFormatter.string(from: NSNumber(value: minutes))!)′\(secondsFormatter.string(from: seconds)!)″"
     }
     
     public var latitudeString: String {
@@ -35,6 +42,7 @@ extension CLLocationCoordinate2D: CustomStringConvertible {
     }
     
     // ISO 6709 Annex D
+    // https://en.wikipedia.org/wiki/ISO_6709
     public var description: String {
         return "\(latitudeString) \(longitudeString)"
     }
