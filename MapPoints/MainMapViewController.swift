@@ -122,6 +122,40 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             }
         }
     }
+    
+    enum MapLayer {
+        case initially
+        case mapApple
+        case satelliteApple
+        case mapOSM
+    }
+    
+    private var OSMLayer = MKOSMTileOverlay()
+    
+    private var mapLayer: MapLayer = MapLayer.initially {
+        didSet {
+            guard mapLayer != oldValue else {
+                return
+            }
+            
+            switch mapLayer {
+            case .mapApple:
+                mapView.mapType = .standard
+                mapView.remove(OSMLayer)
+                UIApplication.shared.setStatusBarStyle(.default, animated: false)
+            case .satelliteApple:
+                mapView.mapType = .hybrid
+                mapView.remove(OSMLayer)
+                UIApplication.shared.setStatusBarStyle(.lightContent, animated: false)
+            case .mapOSM:
+                mapView.insert(OSMLayer, at: 0)
+                OSMLayer.canReplaceMapContent = true
+                UIApplication.shared.setStatusBarStyle(.default, animated: false)
+            default:
+                mapView.mapType = .hybrid
+            }
+        }
+    }
 
     @IBAction func addPointButtonTouchUpInside(_ sender: UIButton) {
         guard let annotation = annotationForAdding else {
@@ -160,7 +194,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             return
         }
 
-        mapView.removeOverlays(mapView.overlays)
+        mapView.removeOverlays(mapView.overlays.filter({ $0 is MKPolyline }))
 
         let request: MKDirectionsRequest = MKDirectionsRequest()
 
@@ -214,7 +248,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         UIView.animate(withDuration: 0.5, animations: {
             sender.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
         }, completion: { (_: Bool) -> Void in
-            self.mapView.removeOverlays(self.mapView.overlays)
+            self.mapView.removeOverlays(self.mapView.overlays.filter({ $0 is MKPolyline }))
             sender.isHidden = true
         })
     }
@@ -227,6 +261,19 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             mapMode = .followWithHeading
         default:
             mapMode = .follow
+        }
+    }
+
+    @IBAction func mapLayerButtonTouchUpInside(_ sender: UIButton) {
+        switch mapLayer {
+        case .satelliteApple:
+            mapLayer = .mapApple
+        case .mapApple:
+            mapLayer = .mapOSM
+        case .mapOSM:
+            mapLayer = .satelliteApple
+        default:
+            mapLayer = .satelliteApple
         }
     }
     
@@ -310,6 +357,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         super.viewDidLoad()
 
         mapView.delegate = self
+        
+        mapLayer = .satelliteApple
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
         tapGesture.numberOfTapsRequired = 1
@@ -457,9 +506,16 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+        
+        if overlay is MKTileOverlay {
+            let tileRenderer = MKTileOverlayRenderer(tileOverlay: overlay as! MKTileOverlay)
+            
+            return tileRenderer
+        }
 
         if overlay is MKPolyline {
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+
             switch mapView.overlays.count {
             case 1:
                 polylineRenderer.strokeColor = UIColor.blue.withAlphaComponent(0.75)
@@ -472,9 +528,26 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             }
 
             polylineRenderer.lineWidth = 4
+
+            return polylineRenderer
         }
 
-        return polylineRenderer
+        return MKOverlayRenderer()
+    }
+    
+    func mapViewDidFailLoadingMap(_ mapView: MKMapView, withError error: Error) {
+        let alert = UIAlertController(title: "Error", message: "Can not load map: \(error.localizedDescription)! Show cashed OSM maps?", preferredStyle: .actionSheet)
+
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { ( _: UIAlertAction) -> Void in
+            self.mapLayer = .mapOSM
+        })
+    
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - MKPointAnnotationIconDelegate

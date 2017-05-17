@@ -41,8 +41,9 @@ extension CLLocationCoordinate2D: CustomStringConvertible {
         return "\(CLLocationCoordinate2D.floatToDegrees(longitude))\(longitude >= 0 ? "E" : "W")"
     }
     
-    // ISO 6709 Annex D
-    // https://en.wikipedia.org/wiki/ISO_6709
+    /// Show coordinates in human readble format
+    /// ISO 6709 Annex D
+    /// https://en.wikipedia.org/wiki/ISO_6709
     public var description: String {
         return "\(latitudeString) \(longitudeString)"
     }
