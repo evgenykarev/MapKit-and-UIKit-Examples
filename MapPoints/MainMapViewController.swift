@@ -148,8 +148,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 mapView.remove(OSMLayer)
                 UIApplication.shared.setStatusBarStyle(.lightContent, animated: false)
             case .mapOSM:
-                mapView.insert(OSMLayer, at: 0)
                 OSMLayer.canReplaceMapContent = true
+                mapView.insert(OSMLayer, at: 0)
                 UIApplication.shared.setStatusBarStyle(.default, animated: false)
             default:
                 mapView.mapType = .hybrid
@@ -276,6 +276,48 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             mapLayer = .satelliteApple
         }
     }
+
+    private var zoomTimer: Timer?
+    private var multiplierZoomTimer = 1.0
+    
+    func zoomTimerFire(_ timer: Timer) {
+        mapView.zoom(byMultiplier: multiplierZoomTimer, animated: false)
+    }
+
+    @IBAction func zoomTapped(_ sender: UILongPressGestureRecognizer) {
+        switch sender.state {
+        case .began:
+            guard let button = sender.view as? UIButton else {
+                return
+            }
+            
+            zoomTimer = Timer.scheduledTimer(timeInterval: 1/50, target: self, selector: #selector(zoomTimerFire(_:)), userInfo: nil, repeats: true)
+            
+            switch button.tag {
+            case 1:
+                multiplierZoomTimer = 1.05
+            case 2:
+                multiplierZoomTimer = 0.95
+            default:
+                break
+            }
+        case .ended, .cancelled, .failed:
+            zoomTimer?.invalidate()
+        default:
+            break
+        }
+    }
+    
+    // button zoom has 2 big problem
+    // 1 - when userTrackingMode.follow. http://stackoverflow.com/questions/44025756/ios-mkmapview-programmatically-zoom-via-setregion-has-bugs-when-usertrackingmode
+    // 2 - when map is animating now, zoom work from point where animate was started
+    @IBAction func zoomButtonTouchUpInside(_ sender: UIButton) {
+        if sender.tag == 1 {
+            mapView.zoom(byMultiplier: 2, animated: true)
+        } else if sender.tag == 2 {
+            mapView.zoom(byMultiplier: 0.5, animated: true)
+        }
+    }
     
     // MARK: - UIViewController
     
@@ -344,6 +386,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             newCenter.y -= offsetMapY
             let newCenterCoordinate = mapView.convert(newCenter, toCoordinateFrom: view)
             
+            // without cancel follow mode mapView refreshes map zoom state
+            mapMode = .free
             mapView.setCenter(newCenterCoordinate, animated: true)
         }
         
@@ -480,6 +524,10 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         }
     }
     
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+
+    }
+    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if let heading = locationManager.heading {
             userLocationHeadingSubviewRotate(to: heading)
@@ -489,7 +537,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
 
         scaleLabel.text = "\(scale) m"
     }
-    
+
     func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
         switch mode {
         case .followWithHeading:
@@ -536,7 +584,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     }
     
     func mapViewDidFailLoadingMap(_ mapView: MKMapView, withError error: Error) {
-        let alert = UIAlertController(title: "Error", message: "Can not load map: \(error.localizedDescription)! Show cashed OSM maps?", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Can not load map. \(error.localizedDescription)", message: "Show cashed OSM maps?", preferredStyle: .actionSheet)
 
         let okAction = UIAlertAction(title: "OK", style: .default, handler: { ( _: UIAlertAction) -> Void in
             self.mapLayer = .mapOSM
@@ -835,12 +883,12 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             switch menuState {
             case .initialize, .withoutActivePoint:
                 menuState = MenuState.withoutActivePoint(height: menuHeight, dragged: true)
-            case .withActivePoint(_, dragged: _, let activePointState):
+            case .withActivePoint(_, _, let activePointState):
                 menuState = MenuState.withActivePoint(height: menuHeight, dragged: true, activePointState: activePointState)
             }
         case .ended, .failed, .cancelled:
             switch menuState {
-            case .withActivePoint(_, dragged: _, let activePointState):
+            case .withActivePoint(_, _, let activePointState):
                 if menuState.percentAnimation == 0 {
                     closePointButtonTouchUpInside(closePointButton)
                 } else {
@@ -853,7 +901,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             switch menuState {
             case .initialize, .withoutActivePoint:
                 menuState = .withoutActivePoint(height: MenuState.menuHeightCollapsed, dragged: false)
-            case .withActivePoint(_, dragged: _, let activePointState):
+            case .withActivePoint(_, _, let activePointState):
                 menuState = .withActivePoint(height: MenuState.menuHeightExpanded, dragged: false, activePointState: activePointState)
             }
         }

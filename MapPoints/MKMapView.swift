@@ -20,4 +20,25 @@ extension MKMapView {
         
         return rightLocation.distance(from: leftLocation)
     }
+    
+    /// Zoom map by multipluer. If multipluer = 2, the area of map expands by 2 time
+    func zoom(byMultiplier multiplier: Double, animated: Bool) {
+        if animated {
+            let newCamera: MKMapCamera
+            
+            if #available(iOS 9.0, *) {
+                newCamera = MKMapCamera(lookingAtCenter: camera.centerCoordinate, fromDistance: camera.altitude * multiplier, pitch: camera.pitch, heading: camera.heading)
+            } else {
+                newCamera = MKMapCamera()
+                newCamera.centerCoordinate = camera.centerCoordinate
+                newCamera.heading = camera.heading
+                newCamera.altitude = camera.altitude * multiplier
+                newCamera.pitch = camera.pitch
+            }
+            
+            self.setCamera(newCamera, animated: true)
+        } else {
+            self.camera.altitude *= multiplier
+        }
+    }
 }
