@@ -33,6 +33,10 @@
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="hybrid" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsPointsOfInterest="NO" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="llp-nf-4p0">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="eqL-9B-T5L" appends="YES" id="MlP-uE-GNW"/>
+                    </connections>
                 </mapView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w13-mR-E1C">
                     <rect key="frame" x="348" y="343" width="50" height="50"/>
@@ -332,5 +336,10 @@
                 <action selector="zoomTapped:" destination="-1" id="H33-TR-Brb"/>
             </connections>
         </pongPressGestureRecognizer>
+        <tapGestureRecognizer id="eqL-9B-T5L">
+            <connections>
+                <action selector="mapTapped:" destination="-1" id="puH-DF-nH3"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

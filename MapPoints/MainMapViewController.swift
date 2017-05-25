@@ -338,76 +338,44 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     private var countPoints = 0
     
-    func mapTapped(_ sender: UIGestureRecognizer) -> Bool {
+    /// Check that menu does not close point after extending, and point not near screen edge
+    private func moveAnnotationToVisibleRect(_ annotation: MKAnnotation) {
+        let minOffset: CGFloat = 48
+        
+        let visibleRect = CGRect(x: minOffset, y: minOffset, width: mapView.frame.width - minOffset * 2, height: mapView.frame.height - minOffset * 2 - CGFloat(MenuState.menuHeightExpanded))
+        
+        mapView.moveAnnotationToRect(annotation, toRect: visibleRect, animated: true)
+    }
+    
+    @IBAction func mapTapped(_ sender: UITapGestureRecognizer) {
         let point = sender.location(in: mapView)
-        let tapPoint = mapView.convert(point, toCoordinateFrom: view)
-
+        let pointCoordinate = mapView.convert(point, toCoordinateFrom: view)
+        
         // update annotation
         if annotationForAdding == nil {
             annotationForAdding = MKPointAnnotationIcon(isActive: true)
             annotationForAdding!.title = "Point \(countPoints)"
             countPoints += 1
-            annotationForAdding!.subtitle = "\(tapPoint)"
+            annotationForAdding!.subtitle = "\(pointCoordinate)"
             annotationForAdding!.delegate = self
             mapView.addAnnotation(annotationForAdding!)
         }
         
-        annotationForAdding!.coordinate = tapPoint
+        annotationForAdding!.coordinate = pointCoordinate
         
-        // check that menu does not close point after extending, and point not near screen edge
-        var offsetMapY: CGFloat = 0
-        var offsetMapX: CGFloat = 0
+        moveAnnotationToVisibleRect(annotationForAdding!)
         
-        let minOffset: CGFloat = 32
-        
-        if minOffset - point.x > 0 {
-            offsetMapX += (minOffset - point.x)
-        }
-        
-        if point.x + minOffset - mapView.frame.maxX > 0 {
-            offsetMapX -= point.x + minOffset - mapView.frame.maxX
-        }
-        
-        let annotationHeight = mapView.view(for: annotationForAdding!)?.frame.height ?? 0
-        
-        if minOffset + annotationHeight - point.y > 0 {
-            offsetMapY += (minOffset + annotationHeight - point.y)
-        }
-        
-        let underMenuHeight = point.y + minOffset - mapView.frame.maxY + CGFloat(MenuState.menuHeightExpanded)
-        
-        if underMenuHeight > 0 {
-            offsetMapY -= underMenuHeight
-        }
-        
-        if offsetMapX != 0 || offsetMapY != 0 {
-            var newCenter = mapView.convert(mapView.centerCoordinate, toPointTo: view)
-            newCenter.x -= offsetMapX
-            newCenter.y -= offsetMapY
-            let newCenterCoordinate = mapView.convert(newCenter, toCoordinateFrom: view)
-            
-            // without cancel follow mode mapView refreshes map zoom state
-            mapMode = .free
-            mapView.setCenter(newCenterCoordinate, animated: true)
-        }
-        
-        //
-        findLocationName(location: CLLocation(latitude: tapPoint.latitude, longitude: tapPoint.longitude))
-        
-        return true
+        findLocationName(location: CLLocation(latitude: pointCoordinate.latitude, longitude: pointCoordinate.longitude))
+
+        return
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         mapView.delegate = self
-        
+
         mapLayer = .satelliteApple
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(mapTapped(_:)))
-        tapGesture.numberOfTapsRequired = 1
-        tapGesture.numberOfTouchesRequired = 1
-        mapView.addGestureRecognizer(tapGesture)
 
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -461,6 +429,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         guard annotation != annotationForAdding else {
             return true
         }
+
+        moveAnnotationToVisibleRect(annotation)
         
         mapView.selectAnnotation(annotation, animated: true)
         

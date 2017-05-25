@@ -41,4 +41,58 @@ extension MKMapView {
             self.camera.altitude *= multiplier
         }
     }
+    
+    /// Move map to offset in points
+    func move(toOffsetX offsetX: CGFloat, offsetY: CGFloat, animated: Bool) {
+        guard offsetX != 0 || offsetY != 0 else {
+            return
+        }
+        
+        var newCenter = convert(centerCoordinate, toPointTo: self)
+        newCenter.x -= offsetX
+        newCenter.y -= offsetY
+        let newCenterCoordinate = convert(newCenter, toCoordinateFrom: self)
+        
+        // without cancel follow mode mapView refreshes map zoom state
+        self.userTrackingMode = .none
+
+        setCenter(newCenterCoordinate, animated: animated)
+    }
+    
+    /// 
+    func moveAnnotationToRect(_ annotation: MKAnnotation, toRect: CGRect, animated: Bool) {
+
+        let point = convert(annotation.coordinate, toPointTo: self)
+        
+        guard !toRect.contains(point) else {
+            return
+        }
+        
+        var offsetMapY: CGFloat = 0
+        var offsetMapX: CGFloat = 0
+        
+        //let minOffset: CGFloat = 32
+        
+        if toRect.minX - point.x > 0 {
+            offsetMapX += (toRect.minX - point.x)
+        }
+        
+        if point.x - toRect.maxX > 0 {
+            offsetMapX -= point.x - toRect.maxX
+        }
+        
+        let annotationHeight = view(for: annotation)?.frame.height ?? 0
+        
+        if toRect.minY + annotationHeight - point.y > 0 {
+            offsetMapY += (toRect.minY + annotationHeight - point.y)
+        }
+        
+        let underMenuHeight = point.y - toRect.maxY
+        
+        if underMenuHeight > 0 {
+            offsetMapY -= underMenuHeight
+        }
+        
+        move(toOffsetX: offsetMapX, offsetY: offsetMapY, animated: animated)
+    }
 }
