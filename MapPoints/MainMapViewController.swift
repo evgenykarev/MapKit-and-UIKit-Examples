@@ -462,7 +462,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             return true
         }
         
-        annotationForUpdating = annotation
+        mapView.selectAnnotation(annotation, animated: true)
         
         return true
     }
@@ -522,6 +522,18 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             
             userLocationHeadingSubview.center = CGPoint(x: headingView.frame.size.width/2, y: headingView.frame.size.height/2)
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation as? MKPointAnnotationIcon else {
+            return
+        }
+        
+        annotationForUpdating = annotation
+    }
+
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+
     }
     
     func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
