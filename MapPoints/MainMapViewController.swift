@@ -117,8 +117,14 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     private var annotationForUpdating: MKPointAnnotationIcon? {
         didSet {
+            if oldValue != nil && oldValue != annotationForUpdating {
+                mapView.deselectAnnotation(oldValue, animated: true)
+            }
+            
             if annotationForUpdating != nil {
                 currentAnnotation = annotationForUpdating
+
+                findLocationName(location: CLLocation(latitude: annotationForUpdating!.coordinate.latitude, longitude: annotationForUpdating!.coordinate.longitude))
             }
         }
     }
@@ -178,10 +184,6 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     }
     
     @IBAction func closePointButtonTouchUpInside(_ sender: UIButton) {
-        if let annotation = annotationForUpdating {
-            mapView.deselectAnnotation(annotation, animated: true)
-        }
-
         currentAnnotation = nil
     }
 
@@ -417,24 +419,20 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     // MARK: - MKMapViewDelegate
     
-    func annotationTapped(_ sender: UIGestureRecognizer) -> Bool {
+    func annotationTapped(_ sender: UIGestureRecognizer) {
         guard let annotationView = sender.view as? MKAnnotationView else {
-            return true
+            return
         }
         
         guard let annotation = annotationView.annotation as? MKPointAnnotationIcon else {
-            return true
+            return
         }
         
         guard annotation != annotationForAdding else {
-            return true
+            return
         }
 
         moveAnnotationToVisibleRect(annotation)
-        
-        mapView.selectAnnotation(annotation, animated: true)
-        
-        return true
     }
     
     private let reusableAnnotationIdentifier = "mapPointsAnnotation"
@@ -582,17 +580,54 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     // MARK: - MKPointAnnotationIconDelegate
     
-    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage) {
+    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage, withCenterOffset centerOffset: CGPoint, withIconView iconView: UIImageView) {
         if let annotationView = mapView.view(for: annotation) {
-            annotationView.image = icon
-            annotationView.centerOffset = CGPoint(x: 0, y: -icon.size.height/2)
+            if annotation.isSaved {
+                if annotation.isActive {
+                    annotationView.image = icon
+                    annotationView.centerOffset = centerOffset
+
+                    annotationView.addSubview(iconView)
+
+                    let iconSize = iconView.image!.size
+                    let deltaBetweenIcons: CGFloat = 3
+
+                    iconView.layer.anchorPoint = CGPoint(x: 0.5, y: 1)
+
+                    iconView.center.x = icon.size.width/2
+                    // center is position of new anchor point, it will be 0
+                    iconView.center.y = 0 - deltaBetweenIcons
+                    iconView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+
+                    annotationView.calloutOffset = CGPoint(x: 0, y: -iconSize.height - deltaBetweenIcons)
+                    
+                    
+                    UIView.animate(withDuration: 0.27, animations: {
+                        iconView.transform = CGAffineTransform.identity
+                    }, completion: { (_: Bool) in
+
+                    })
+                } else {
+                    UIView.animate(withDuration: 0.27, animations: {
+                        iconView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                    }, completion: { (_: Bool) in
+                        iconView.removeFromSuperview()
+                        annotationView.calloutOffset = CGPoint(x: 0, y: 0)
+                        annotationView.centerOffset = centerOffset
+                        annotationView.image = icon
+                    })
+                }
+            } else {
+                annotationView.image = icon
+                annotationView.centerOffset = centerOffset
+            }
         }
     }
     
     func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didSave isSaved: Bool) {
         if let annotationView = mapView.view(for: annotation) {
             annotationView.canShowCallout = isSaved
-            
+
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(annotationTapped(_:)))
             tapGesture.numberOfTapsRequired = 1
             tapGesture.numberOfTouchesRequired = 1
@@ -776,7 +811,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 } else {
                     mapView.isUserInteractionEnabled = false
 
-                    UIView.animate(withDuration: 0.5, animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseIn], animations: {
                         self.closePointButton.transform = self.menuState.deletePointButtonTransform
                         self.toPointRouteButton.transform = self.menuState.toPointRouteButtonTransform
                         
@@ -827,7 +862,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                     toPointRouteButton.isHidden = false
                     closePointButton.isHidden = false
 
-                    UIView.animate(withDuration: 0.5, animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: [.curveEaseIn], animations: {
                         self.closePointButton.transform = self.menuState.deletePointButtonTransform
                         self.toPointRouteButton.transform = self.menuState.toPointRouteButtonTransform
                         
