@@ -445,7 +445,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         var annotationView: MKAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: reusableAnnotationIdentifier)
         
         if annotationView == nil {
-            annotationView = MKAnnotationView(annotation: annotationIcon, reuseIdentifier: reusableAnnotationIdentifier)
+            annotationView = MKAnnotationViewWithIcon(annotation: annotationIcon, reuseIdentifier: reusableAnnotationIdentifier, icon: MKPointAnnotationIcon.notSavedPoint)
         }
 
         annotationView!.canShowCallout = annotationIcon.isSaved
@@ -580,42 +580,24 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     // MARK: - MKPointAnnotationIconDelegate
     
-    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage, withCenterOffset centerOffset: CGPoint, withIconView iconView: UIImageView) {
-        if let annotationView = mapView.view(for: annotation) {
+    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage, withCenterOffset centerOffset: CGPoint) {
+        if let annotationView = mapView.view(for: annotation) as? MKAnnotationViewWithIcon {
             if annotation.isSaved {
                 if annotation.isActive {
                     annotationView.image = icon
                     annotationView.centerOffset = centerOffset
 
-                    annotationView.addSubview(iconView)
-
-                    let iconSize = iconView.image!.size
-                    let deltaBetweenIcons: CGFloat = 3
-
-                    iconView.layer.anchorPoint = CGPoint(x: 0.5, y: 1)
-
-                    iconView.center.x = icon.size.width/2
-                    // center is position of new anchor point, it will be 0
-                    iconView.center.y = 0 - deltaBetweenIcons
-                    iconView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-
-                    annotationView.calloutOffset = CGPoint(x: 0, y: -iconSize.height - deltaBetweenIcons)
-                    
-                    
-                    UIView.animate(withDuration: 0.27, animations: {
-                        iconView.transform = CGAffineTransform.identity
-                    }, completion: { (_: Bool) in
-
-                    })
+                    annotationView.showIcon()
                 } else {
-                    UIView.animate(withDuration: 0.27, animations: {
-                        iconView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                    }, completion: { (_: Bool) in
-                        iconView.removeFromSuperview()
-                        annotationView.calloutOffset = CGPoint(x: 0, y: 0)
+                    if annotationView.isIconShowed {
+                        annotationView.hideIcon {
+                            annotationView.centerOffset = centerOffset
+                            annotationView.image = icon
+                        }
+                    } else {
                         annotationView.centerOffset = centerOffset
                         annotationView.image = icon
-                    })
+                    }
                 }
             } else {
                 annotationView.image = icon

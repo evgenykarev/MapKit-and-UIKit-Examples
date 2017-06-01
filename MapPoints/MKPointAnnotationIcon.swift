@@ -9,7 +9,7 @@
 import MapKit
 
 protocol MKPointAnnotationIconDelegate: class {
-    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage, withCenterOffset centerOffset: CGPoint, withIconView iconView: UIImageView)
+    func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didChangeIconTo icon: UIImage, withCenterOffset centerOffset: CGPoint)
     func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didSave isSaved: Bool)
 }
 
@@ -23,7 +23,7 @@ class MKPointAnnotationIcon: MKPointAnnotation {
     var isActive: Bool {
         didSet {
             if oldValue != isActive {
-                delegate?.pointAnnotationIcon(self, didChangeIconTo: self.icon, withCenterOffset: self.centerOffset, withIconView: self.iconView)
+                delegate?.pointAnnotationIcon(self, didChangeIconTo: self.icon, withCenterOffset: self.centerOffset)
             }
         }
     }
@@ -56,12 +56,6 @@ class MKPointAnnotationIcon: MKPointAnnotation {
         return CGPoint(x: 0, y: -icon.size.height/2)
     }
     
-    private var _iconView: UIImageView
-    
-    var iconView: UIImageView {
-        return _iconView
-    }
-    
     var iconForAccessoryView: UIImage {
         return type(of: self).savedPointIconNotActive
     }
@@ -69,11 +63,6 @@ class MKPointAnnotationIcon: MKPointAnnotation {
     init(isActive: Bool) {
         self.isActive = isActive
         self._isSaved = false
-        self._iconView = UIImageView(image: type(of: self).notSavedPoint)
-        self._iconView.layer.shadowOffset = CGSize(width: 0, height: 3)
-        self._iconView.layer.shadowRadius = 3
-        self._iconView.layer.shadowOpacity = 1
-        self._iconView.isUserInteractionEnabled = true
 
         super.init()
     }

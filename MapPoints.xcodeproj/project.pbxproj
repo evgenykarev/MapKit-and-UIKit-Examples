@@ -19,6 +19,8 @@
 		5C2B67881EB20098006CF9A5 /* MainMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C2B67871EB20098006CF9A5 /* MainMapViewController.xib */; };
 		5C51597B1ECA096A0034C8AB /* MKCashedTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C51597A1ECA096A0034C8AB /* MKCashedTileOverlay.swift */; };
 		5C73DC2D1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */; };
+		5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */; };
+		5C78BBCE1EE016580037D483 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCD1EE016580037D483 /* UIImage.swift */; };
 		5CD630CE1ECB47660038B518 /* MKOSMTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */; };
 		5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE95C771EC38DD400277550 /* PercentAnimator.swift */; };
 		5CEC6BB41EB2050E0021DC95 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CEC6BB31EB2050E0021DC95 /* MapKit.framework */; };
@@ -39,6 +41,8 @@
 		5C2B67871EB20098006CF9A5 /* MainMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMapViewController.xib; sourceTree = "<group>"; };
 		5C51597A1ECA096A0034C8AB /* MKCashedTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCashedTileOverlay.swift; sourceTree = "<group>"; };
 		5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
+		5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKAnnotationViewWithIcon.swift; sourceTree = "<group>"; };
+		5C78BBCD1EE016580037D483 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKOSMTileOverlay.swift; sourceTree = "<group>"; };
 		5CE95C771EC38DD400277550 /* PercentAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentAnimator.swift; sourceTree = "<group>"; };
 		5CEC6BB31EB2050E0021DC95 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -62,6 +66,7 @@
 				5C24A6811EC470C300DA4C9C /* MKMapView.swift */,
 				5C24A6831EC4710800DA4C9C /* CLPlacemark.swift */,
 				5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */,
+				5C78BBCD1EE016580037D483 /* UIImage.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -134,11 +139,20 @@
 			name = MKTileOverlay;
 			sourceTree = "<group>";
 		};
+		5C78BBCA1EDF3F100037D483 /* MKAnnotationView */ = {
+			isa = PBXGroup;
+			children = (
+				5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */,
+			);
+			name = MKAnnotationView;
+			sourceTree = "<group>";
+		};
 		5CE95C761EC38D9800277550 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				5C5159791ECA094A0034C8AB /* MKTileOverlay */,
 				5C24A6851EC589FF00DA4C9C /* MKAnnotations */,
+				5C78BBCA1EDF3F100037D483 /* MKAnnotationView */,
+				5C5159791ECA094A0034C8AB /* MKTileOverlay */,
 				5CE95C771EC38DD400277550 /* PercentAnimator.swift */,
 			);
 			name = Infrastructure;
@@ -232,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CD630CE1ECB47660038B518 /* MKOSMTileOverlay.swift in Sources */,
+				5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */,
 				5C51597B1ECA096A0034C8AB /* MKCashedTileOverlay.swift in Sources */,
 				5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */,
 				5C24A6841EC4710800DA4C9C /* CLPlacemark.swift in Sources */,
@@ -239,6 +254,7 @@
 				5C2B67731EB1FEE8006CF9A5 /* MainMapViewController.swift in Sources */,
 				5C24A6871EC58ACB00DA4C9C /* MKPointAnnotationIcon.swift in Sources */,
 				5C73DC2D1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift in Sources */,
+				5C78BBCE1EE016580037D483 /* UIImage.swift in Sources */,
 				5C2B67711EB1FEE8006CF9A5 /* AppDelegate.swift in Sources */,
 				5C24A6821EC470C300DA4C9C /* MKMapView.swift in Sources */,
 			);
