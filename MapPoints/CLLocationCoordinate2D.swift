@@ -9,7 +9,12 @@
 import MapKit
 
 extension CLLocationCoordinate2D: CustomStringConvertible {
-    
+
+    /// Function converts float latitude or longitude value from Float to String according to ISO 6709
+    /**
+    - parameter floatValue: Float latitude or longitude value
+    - returns: String in ISO 6709 human readble format
+    */
     static func floatToDegrees(_ floatValue: Double) -> String {
         let degrees = abs(floatValue.rounded(.towardZero))
         

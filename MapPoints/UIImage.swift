@@ -9,7 +9,11 @@
 import UIKit
 
 extension UIImage {
-    /// return UIImage snapshot from view
+    /// Return UIImage snapshot from view
+    /**
+    - parameter from: View from which it will be taken snapshot
+    - returns: UIImage snapshot
+    */
     class func image(from view: UIView) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, 0)
         defer { UIGraphicsEndImageContext() }

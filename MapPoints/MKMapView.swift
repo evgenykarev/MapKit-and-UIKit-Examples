@@ -58,8 +58,13 @@ extension MKMapView {
 
         setCenter(newCenterCoordinate, animated: animated)
     }
-    
-    /// 
+
+    /// Move annotation to selected rect in the map
+    /**
+    - parameter annotation: The annotation placed in the map
+    - parameter toRect: After action the annotation point will replace to this rect
+    - parameter animated: Do this replace with animation
+    */
     func moveAnnotationToRect(_ annotation: MKAnnotation, toRect: CGRect, animated: Bool) {
 
         let point = convert(annotation.coordinate, toPointTo: self)
@@ -70,8 +75,6 @@ extension MKMapView {
         
         var offsetMapY: CGFloat = 0
         var offsetMapX: CGFloat = 0
-        
-        //let minOffset: CGFloat = 32
         
         if toRect.minX - point.x > 0 {
             offsetMapX += (toRect.minX - point.x)
