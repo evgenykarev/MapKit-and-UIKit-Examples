@@ -6,7 +6,7 @@
 //  Copyright © 2017 Evgeny Karev. All rights reserved.
 //
 
-import MapKit
+import CoreLocation
 
 extension CLLocationCoordinate2D: CustomStringConvertible {
 

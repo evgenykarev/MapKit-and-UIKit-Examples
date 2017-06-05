@@ -362,9 +362,9 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             annotationForAdding!.delegate = self
             mapView.addAnnotation(annotationForAdding!)
         }
-        
+
         annotationForAdding!.coordinate = pointCoordinate
-        
+
         moveAnnotationToVisibleRect(annotationForAdding!)
         
         findLocationName(location: CLLocation(latitude: pointCoordinate.latitude, longitude: pointCoordinate.longitude))
@@ -451,8 +451,16 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         annotationView!.canShowCallout = annotationIcon.isSaved
         
         annotationView!.image = annotationIcon.icon
+        
         annotationView!.centerOffset = CGPoint(x: 0, y: -annotationIcon.icon.size.height/2)
-        annotationView!.leftCalloutAccessoryView = UIImageView(image: annotationIcon.iconForAccessoryView)
+
+        let leftImage = annotationIcon.iconForAccessoryView
+        annotationView!.leftCalloutAccessoryView = UIImageView(image: leftImage)
+        
+        // add rightAccessoryView button
+        if let navigateButton = Bundle.main.loadNibNamed("CalloutRightButton", owner: nil, options: nil)?[0] as? UIButton {
+            annotationView!.rightCalloutAccessoryView = navigateButton
+        }
         
         return annotationView
     }
@@ -531,6 +539,16 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
 
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        // route in Maps
+        if let annotation = view.annotation {
+            let placemark = MKPlacemark(coordinate: annotation.coordinate, addressDictionary: nil)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = annotation.title ?? ""
+            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+        }
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -761,7 +779,7 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             return alpha(forAnimator: animator)
         }
     }
-    
+
     var menuState: MenuState = MenuState.initialize {
         didSet {
             switch menuState {

@@ -82,7 +82,7 @@ class MKAnnotationViewWithIcon: MKAnnotationView {
             _imageWithTransparentAreaForIcon = image
         }
     }
-    
+
     func showIcon() {
         guard !isIconShowed else {
             return

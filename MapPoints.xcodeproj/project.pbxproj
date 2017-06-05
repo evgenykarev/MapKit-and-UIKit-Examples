@@ -21,6 +21,7 @@
 		5C73DC2D1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */; };
 		5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */; };
 		5C78BBCE1EE016580037D483 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCD1EE016580037D483 /* UIImage.swift */; };
+		5C9DEB151EE1E1EF00837BF3 /* CalloutRightButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C9DEB141EE1E1EF00837BF3 /* CalloutRightButton.xib */; };
 		5CD630CE1ECB47660038B518 /* MKOSMTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */; };
 		5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE95C771EC38DD400277550 /* PercentAnimator.swift */; };
 		5CEC6BB41EB2050E0021DC95 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CEC6BB31EB2050E0021DC95 /* MapKit.framework */; };
@@ -43,6 +44,7 @@
 		5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKAnnotationViewWithIcon.swift; sourceTree = "<group>"; };
 		5C78BBCD1EE016580037D483 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		5C9DEB141EE1E1EF00837BF3 /* CalloutRightButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalloutRightButton.xib; sourceTree = "<group>"; };
 		5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKOSMTileOverlay.swift; sourceTree = "<group>"; };
 		5CE95C771EC38DD400277550 /* PercentAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentAnimator.swift; sourceTree = "<group>"; };
 		5CEC6BB31EB2050E0021DC95 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -126,6 +128,7 @@
 		5C2B67861EB20064006CF9A5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5C9DEB141EE1E1EF00837BF3 /* CalloutRightButton.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				5C2B677E1EB1FEE8006CF9A5 /* LaunchScreen.storyboard in Resources */,
 				5C2B677B1EB1FEE8006CF9A5 /* Assets.xcassets in Resources */,
 				5C2B67881EB20098006CF9A5 /* MainMapViewController.xib in Resources */,
+				5C9DEB151EE1E1EF00837BF3 /* CalloutRightButton.xib in Resources */,
 				5C2B67761EB1FEE8006CF9A5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
