@@ -11,13 +11,13 @@ target 'MapPoints' do
 end
 
 # see more https://github.com/firebase/geofire-objc/issues/48
-#post_install do |installer|
-#    installer.pods_project.targets.each do |target|
-#        if target.name == 'GeoFire' then
-#            target.build_configurations.each do |config|
-#                config.build_settings['FRAMEWORK_SEARCH_PATHS'] = "#{config.build_settings['FRAMEWORK_SEARCH_PATHS']} ${PODS_ROOT}/FirebaseDatabase/Frameworks/ $PODS_CONFIGURATION_BUILD_DIR/GoogleToolboxForMac"
-#                config.build_settings['OTHER_LDFLAGS'] = "#{config.build_settings['OTHER_LDFLAGS']} -framework FirebaseDatabase"
-#            end
-#        end
-#    end
-#end
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if target.name == 'GeoFire' then
+            target.build_configurations.each do |config|
+                config.build_settings['FRAMEWORK_SEARCH_PATHS'] = "#{config.build_settings['FRAMEWORK_SEARCH_PATHS']} ${PODS_ROOT}/FirebaseDatabase/Frameworks/ $PODS_CONFIGURATION_BUILD_DIR/GoogleToolboxForMac"
+                config.build_settings['OTHER_LDFLAGS'] = "#{config.build_settings['OTHER_LDFLAGS']} -framework FirebaseDatabase"
+            end
+        end
+    end
+end
