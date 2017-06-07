@@ -8,9 +8,12 @@
 
 import UIKit
 import MapKit
+import Firebase
+import FirebaseDatabase
+import GeoFire
 
 
-class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, MKPointAnnotationIconDelegate {
+class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, MKPointAnnotationIconDelegate, FirebaseManagerDelegate {
     
     enum MapMode {
         case follow
@@ -168,19 +171,21 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             return
         }
 
-        annotation.save()
-        annotationForUpdating = annotation
-        annotationForAdding = nil
-        currentAnnotation = nil
+        FirebaseManager.instance.createMapPoint(for: annotation)
     }
     
     @IBAction func removePointButtonTouchUpInside(_ sender: UIButton) {
         guard let annotation = annotationForUpdating else {
             return
         }
+        
+        guard let mapPoint = mapPoint(for: annotation) else {
+            return
+        }
+
+        FirebaseManager.instance.removeMapPoint(mapPoint)
 
         currentAnnotation = nil
-        mapView.removeAnnotation(annotation)
     }
     
     @IBAction func closePointButtonTouchUpInside(_ sender: UIButton) {
@@ -355,10 +360,10 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         
         // update annotation
         if annotationForAdding == nil {
-            annotationForAdding = MKPointAnnotationIcon(isActive: true)
+            annotationForAdding = MKPointAnnotationIcon(isActive: true, isSaved: false)
             annotationForAdding!.title = "Point \(countPoints)"
             countPoints += 1
-            annotationForAdding!.subtitle = "\(pointCoordinate)"
+            annotationForAdding!.subtitle = pointCoordinate.description
             annotationForAdding!.delegate = self
             mapView.addAnnotation(annotationForAdding!)
         }
@@ -391,6 +396,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestWhenInUseAuthorization()
         }
+
+        FirebaseManager.instance.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -400,6 +407,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             locationManager.startUpdatingLocation()
             locationManager.startUpdatingHeading()
         }
+
+        FirebaseManager.instance.isListening = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -409,6 +418,8 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             locationManager.stopUpdatingLocation()
             locationManager.stopUpdatingHeading()
         }
+
+        FirebaseManager.instance.isListening = false
     }
 
     // TODO: remove it. It's bugfix for iOS 8
@@ -442,26 +453,28 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
             return nil
         }
 
-        var annotationView: MKAnnotationView? = mapView.dequeueReusableAnnotationView(withIdentifier: reusableAnnotationIdentifier)
+        var annotationView: MKAnnotationView! = mapView.dequeueReusableAnnotationView(withIdentifier: reusableAnnotationIdentifier)
         
         if annotationView == nil {
             annotationView = MKAnnotationViewWithIcon(annotation: annotationIcon, reuseIdentifier: reusableAnnotationIdentifier, icon: MKPointAnnotationIcon.notSavedPoint)
         }
 
-        annotationView!.canShowCallout = annotationIcon.isSaved
-        
-        annotationView!.image = annotationIcon.icon
-        
-        annotationView!.centerOffset = CGPoint(x: 0, y: -annotationIcon.icon.size.height/2)
+        annotationView.canShowCallout = annotationIcon.isSaved
+        annotationView.image = annotationIcon.icon
+        annotationView.centerOffset = CGPoint(x: 0, y: -annotationIcon.icon.size.height/2)
 
         let leftImage = annotationIcon.iconForAccessoryView
-        annotationView!.leftCalloutAccessoryView = UIImageView(image: leftImage)
+        annotationView.leftCalloutAccessoryView = UIImageView(image: leftImage)
         
         // add rightAccessoryView button
         if let navigateButton = Bundle.main.loadNibNamed("CalloutRightButton", owner: nil, options: nil)?[0] as? UIButton {
-            annotationView!.rightCalloutAccessoryView = navigateButton
+            annotationView.rightCalloutAccessoryView = navigateButton
         }
         
+        if annotationIcon.isSaved && annotationView.gestureRecognizers?.isEmpty ?? true {
+            addTapGestureTo(annotationView: annotationView)
+        }
+
         return annotationView
     }
 
@@ -524,6 +537,11 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         let scale = Int((mapView.mapWidthMeters * 125 / Double(mapView.frame.maxX)).rounded())
 
         scaleLabel.text = "\(scale) m"
+
+        // check max scale
+        if mapView.camera.altitude < 10000000 {
+            FirebaseManager.instance.updateListening(for: mapView)
+        }
     }
 
     func mapView(_ mapView: MKMapView, didChange mode: MKUserTrackingMode, animated: Bool) {
@@ -624,14 +642,18 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
         }
     }
     
+    private func addTapGestureTo(annotationView: MKAnnotationView) {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(annotationTapped(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        tapGesture.numberOfTouchesRequired = 1
+        annotationView.addGestureRecognizer(tapGesture)
+    }
+    
     func pointAnnotationIcon(_ annotation: MKPointAnnotationIcon, didSave isSaved: Bool) {
         if let annotationView = mapView.view(for: annotation) {
             annotationView.canShowCallout = isSaved
 
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(annotationTapped(_:)))
-            tapGesture.numberOfTapsRequired = 1
-            tapGesture.numberOfTouchesRequired = 1
-            annotationView.addGestureRecognizer(tapGesture)
+            addTapGestureTo(annotationView: annotationView)
         }
     }
 
@@ -922,6 +944,69 @@ class MainMapViewController: UIViewController, MKMapViewDelegate, CLLocationMana
                 menuState = .withActivePoint(height: MenuState.menuHeightExpanded, dragged: false, activePointState: activePointState)
             }
         }
+    }
+    
+    // MARK: - FirebaseManagerDelegate
+    
+    var mapPoints: [String: MapPoint] = [:]
+    
+    private func mapPoint(for annotation: MKPointAnnotationIcon) -> MapPoint? {
+        let mapPoint = mapPoints.first {$1.annotation == annotation}
+
+        return mapPoint?.value
+    }
+    
+    func firebaseManager(_ manager: FirebaseManager, willCreate mapPoint: MapPoint) {
+        mapPoints[mapPoint.id] = mapPoint
+        
+        mapPoint.annotation.save()
+
+        self.annotationForUpdating = mapPoint.annotation
+        self.annotationForAdding = nil
+        self.currentAnnotation = nil
+    }
+    
+    func firebaseManager(_ manager: FirebaseManager, didCreate mapPoint: MapPoint, error: Error?) {
+        guard error == nil else {
+            print("firebase error point location saving \(error!)")
+            
+            return
+        }
+
+        print("firebase location successful saved for \(mapPoint.title)")
+    }
+    
+    func firebaseManager(_ manager: FirebaseManager, didLoad mapPoint: MapPoint) {
+        guard mapPoints[mapPoint.id] == nil else {
+            return
+        }
+        
+        let annotation = mapPoint.annotation
+        annotation.delegate = self
+        
+        print("annotation did load for \(mapPoint.title)")
+        mapView.addAnnotation(annotation)
+        mapPoints[mapPoint.id] = mapPoint
+    }
+    
+    func firebaseManager(_ manager: FirebaseManager, didRemove mapPointId: String) {
+        guard let mapPoint = mapPoints[mapPointId] else {
+            return
+        }
+
+        print("annotation did remove for \(mapPoint.title)")
+        mapPoints.removeValue(forKey: mapPoint.id)
+        mapView.removeAnnotation(mapPoint.annotation)
+    }
+    
+    func firebaseManager(_ manager: FirebaseManager, didRemove mapPoint: MapPoint, error: Error?) {
+        guard error == nil else {
+            print("firebase error point location removing \(error!)")
+            
+            return
+        }
+        
+        print("firebase location successful removed for \(mapPoint.title)")
     }
 }
 

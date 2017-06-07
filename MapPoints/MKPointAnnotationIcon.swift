@@ -35,6 +35,10 @@ class MKPointAnnotationIcon: MKPointAnnotation {
     }
     
     func save() {
+        guard !_isSaved else {
+            return
+        }
+        
         self._isSaved = true
 
         delegate?.pointAnnotationIcon(self, didSave: true)
@@ -60,10 +64,11 @@ class MKPointAnnotationIcon: MKPointAnnotation {
         return type(of: self).savedPointIconNotActive
     }
     
-    init(isActive: Bool) {
+    init(isActive: Bool, isSaved: Bool) {
         self.isActive = isActive
-        self._isSaved = false
+        self._isSaved = isSaved
 
         super.init()
     }
+
 }

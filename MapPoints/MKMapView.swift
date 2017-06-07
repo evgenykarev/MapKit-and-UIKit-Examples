@@ -21,6 +21,17 @@ extension MKMapView {
         return rightLocation.distance(from: leftLocation)
     }
     
+    /// Length from left top point mapView to center point in meters
+    var mapRadiusMeters: Double {
+        let leftPoint = self.convert(CGPoint(x: self.frame.minX, y: self.frame.minY), toCoordinateFrom: self)
+        let leftLocation = CLLocation(latitude: leftPoint.latitude, longitude: leftPoint.longitude)
+        
+        let centerPoint = self.centerCoordinate
+        let centerLocation = CLLocation(latitude: centerPoint.latitude, longitude: centerPoint.longitude)
+        
+        return centerLocation.distance(from: leftLocation)
+    }
+    
     /// Zoom map by multipluer. If multipluer = 2, the area of map expands by 2 time
     func zoom(byMultiplier multiplier: Double, animated: Bool) {
         if animated {

@@ -10,6 +10,7 @@
 		5C24A6821EC470C300DA4C9C /* MKMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24A6811EC470C300DA4C9C /* MKMapView.swift */; };
 		5C24A6841EC4710800DA4C9C /* CLPlacemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24A6831EC4710800DA4C9C /* CLPlacemark.swift */; };
 		5C24A6871EC58ACB00DA4C9C /* MKPointAnnotationIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C24A6861EC58ACB00DA4C9C /* MKPointAnnotationIcon.swift */; };
+		5C2AF0C11EE5A55400800FF1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5C2AF0C01EE5A55400800FF1 /* GoogleService-Info.plist */; };
 		5C2B67711EB1FEE8006CF9A5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B67701EB1FEE8006CF9A5 /* AppDelegate.swift */; };
 		5C2B67731EB1FEE8006CF9A5 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2B67721EB1FEE8006CF9A5 /* MainMapViewController.swift */; };
 		5C2B67761EB1FEE8006CF9A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2B67741EB1FEE8006CF9A5 /* Main.storyboard */; };
@@ -22,15 +23,22 @@
 		5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */; };
 		5C78BBCE1EE016580037D483 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCD1EE016580037D483 /* UIImage.swift */; };
 		5C9DEB151EE1E1EF00837BF3 /* CalloutRightButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C9DEB141EE1E1EF00837BF3 /* CalloutRightButton.xib */; };
+		5CD337531EE6CC5300CB493B /* MapPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD337521EE6CC5300CB493B /* MapPoint.swift */; };
+		5CD337561EE6EAF100CB493B /* MapPointFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD337551EE6EAF100CB493B /* MapPointFirebaseManager.swift */; };
 		5CD630CE1ECB47660038B518 /* MKOSMTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */; };
 		5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE95C771EC38DD400277550 /* PercentAnimator.swift */; };
 		5CEC6BB41EB2050E0021DC95 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CEC6BB31EB2050E0021DC95 /* MapKit.framework */; };
+		5CF935E11EE811AC00316691 /* GeoFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF935E01EE811AC00316691 /* GeoFire.swift */; };
+		BD6A21DC666FEFE7AEA38797 /* Pods_MapPoints.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B77C2DC5387737790C8E56 /* Pods_MapPoints.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		35E33D1D70C4350DFCF0293E /* Pods-MapPoints.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapPoints.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MapPoints/Pods-MapPoints.debug.xcconfig"; sourceTree = "<group>"; };
 		5C24A6811EC470C300DA4C9C /* MKMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapView.swift; sourceTree = "<group>"; };
 		5C24A6831EC4710800DA4C9C /* CLPlacemark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLPlacemark.swift; sourceTree = "<group>"; };
 		5C24A6861EC58ACB00DA4C9C /* MKPointAnnotationIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPointAnnotationIcon.swift; sourceTree = "<group>"; };
+		5C2AF0C01EE5A55400800FF1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5C2AF0C21EE5A6DD00800FF1 /* MapPoints-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MapPoints-Bridging-Header.h"; sourceTree = "<group>"; };
 		5C2B676D1EB1FEE8006CF9A5 /* MapPoints.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapPoints.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C2B67701EB1FEE8006CF9A5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C2B67721EB1FEE8006CF9A5 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
@@ -45,9 +53,14 @@
 		5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKAnnotationViewWithIcon.swift; sourceTree = "<group>"; };
 		5C78BBCD1EE016580037D483 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5C9DEB141EE1E1EF00837BF3 /* CalloutRightButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalloutRightButton.xib; sourceTree = "<group>"; };
+		5CD337521EE6CC5300CB493B /* MapPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPoint.swift; sourceTree = "<group>"; };
+		5CD337551EE6EAF100CB493B /* MapPointFirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPointFirebaseManager.swift; sourceTree = "<group>"; };
 		5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKOSMTileOverlay.swift; sourceTree = "<group>"; };
 		5CE95C771EC38DD400277550 /* PercentAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentAnimator.swift; sourceTree = "<group>"; };
 		5CEC6BB31EB2050E0021DC95 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		5CF935E01EE811AC00316691 /* GeoFire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoFire.swift; sourceTree = "<group>"; };
+		B91494B5B88B47E23C8964C8 /* Pods-MapPoints.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MapPoints.release.xcconfig"; path = "Pods/Target Support Files/Pods-MapPoints/Pods-MapPoints.release.xcconfig"; sourceTree = "<group>"; };
+		C5B77C2DC5387737790C8E56 /* Pods_MapPoints.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MapPoints.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CEC6BB41EB2050E0021DC95 /* MapKit.framework in Frameworks */,
+				BD6A21DC666FEFE7AEA38797 /* Pods_MapPoints.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +83,7 @@
 				5C24A6831EC4710800DA4C9C /* CLPlacemark.swift */,
 				5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */,
 				5C78BBCD1EE016580037D483 /* UIImage.swift */,
+				5CF935E01EE811AC00316691 /* GeoFire.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -87,6 +102,7 @@
 				5C2B676F1EB1FEE8006CF9A5 /* MapsPoint */,
 				5C2B676E1EB1FEE8006CF9A5 /* Products */,
 				5CEC6BB21EB2050E0021DC95 /* Frameworks */,
+				AEF815E30DA2D4CFD771551B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,6 +119,7 @@
 			children = (
 				5C24A6801EC4709A00DA4C9C /* Extensions */,
 				5CE95C761EC38D9800277550 /* Infrastructure */,
+				5CD337511EE6CC1000CB493B /* Models */,
 				5C2B67861EB20064006CF9A5 /* Views */,
 				5C2B67851EB20037006CF9A5 /* Controllers */,
 				5C2B67701EB1FEE8006CF9A5 /* AppDelegate.swift */,
@@ -110,7 +127,9 @@
 				5C2B677A1EB1FEE8006CF9A5 /* Assets.xcassets */,
 				5C2B677C1EB1FEE8006CF9A5 /* LaunchScreen.storyboard */,
 				5C2B677F1EB1FEE8006CF9A5 /* Info.plist */,
+				5C2AF0C01EE5A55400800FF1 /* GoogleService-Info.plist */,
 				5C2B67771EB1FEE8006CF9A5 /* MapsPoint.xcdatamodeld */,
+				5C2AF0C21EE5A6DD00800FF1 /* MapPoints-Bridging-Header.h */,
 			);
 			name = MapsPoint;
 			path = MapPoints;
@@ -150,9 +169,26 @@
 			name = MKAnnotationView;
 			sourceTree = "<group>";
 		};
+		5CD337511EE6CC1000CB493B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5CD337521EE6CC5300CB493B /* MapPoint.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		5CD337541EE6EAC500CB493B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				5CD337551EE6EAF100CB493B /* MapPointFirebaseManager.swift */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
 		5CE95C761EC38D9800277550 /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				5CD337541EE6EAC500CB493B /* Managers */,
 				5C24A6851EC589FF00DA4C9C /* MKAnnotations */,
 				5C78BBCA1EDF3F100037D483 /* MKAnnotationView */,
 				5C5159791ECA094A0034C8AB /* MKTileOverlay */,
@@ -165,8 +201,18 @@
 			isa = PBXGroup;
 			children = (
 				5CEC6BB31EB2050E0021DC95 /* MapKit.framework */,
+				C5B77C2DC5387737790C8E56 /* Pods_MapPoints.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AEF815E30DA2D4CFD771551B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				35E33D1D70C4350DFCF0293E /* Pods-MapPoints.debug.xcconfig */,
+				B91494B5B88B47E23C8964C8 /* Pods-MapPoints.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,9 +222,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5C2B67821EB1FEE8006CF9A5 /* Build configuration list for PBXNativeTarget "MapPoints" */;
 			buildPhases = (
+				6AEA7BB8C81A13BADC3D0910 /* [CP] Check Pods Manifest.lock */,
 				5C2B67691EB1FEE8006CF9A5 /* Sources */,
 				5C2B676A1EB1FEE8006CF9A5 /* Frameworks */,
 				5C2B676B1EB1FEE8006CF9A5 /* Resources */,
+				F671ADEA4CE4E849378FB1CB /* [CP] Embed Pods Frameworks */,
+				3E570B044D8BFC3A2B55E0B0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -202,6 +251,7 @@
 					5C2B676C1EB1FEE8006CF9A5 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = XWCE7FUCPU;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
@@ -239,10 +289,59 @@
 				5C2B67881EB20098006CF9A5 /* MainMapViewController.xib in Resources */,
 				5C9DEB151EE1E1EF00837BF3 /* CalloutRightButton.xib in Resources */,
 				5C2B67761EB1FEE8006CF9A5 /* Main.storyboard in Resources */,
+				5C2AF0C11EE5A55400800FF1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3E570B044D8BFC3A2B55E0B0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapPoints/Pods-MapPoints-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6AEA7BB8C81A13BADC3D0910 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F671ADEA4CE4E849378FB1CB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MapPoints/Pods-MapPoints-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5C2B67691EB1FEE8006CF9A5 /* Sources */ = {
@@ -250,8 +349,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CD630CE1ECB47660038B518 /* MKOSMTileOverlay.swift in Sources */,
+				5CF935E11EE811AC00316691 /* GeoFire.swift in Sources */,
 				5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */,
+				5CD337531EE6CC5300CB493B /* MapPoint.swift in Sources */,
 				5C51597B1ECA096A0034C8AB /* MKCashedTileOverlay.swift in Sources */,
+				5CD337561EE6EAF100CB493B /* MapPointFirebaseManager.swift in Sources */,
 				5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */,
 				5C24A6841EC4710800DA4C9C /* CLPlacemark.swift in Sources */,
 				5C2B67791EB1FEE8006CF9A5 /* MapsPoint.xcdatamodeld in Sources */,
@@ -383,8 +485,10 @@
 		};
 		5C2B67831EB1FEE8006CF9A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35E33D1D70C4350DFCF0293E /* Pods-MapPoints.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MapPoints/Info.plist;
@@ -394,6 +498,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MapPoints/MapPoints-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -401,8 +507,10 @@
 		};
 		5C2B67841EB1FEE8006CF9A5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B91494B5B88B47E23C8964C8 /* Pods-MapPoints.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MapPoints/Info.plist;
@@ -412,6 +520,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MapPoints/MapPoints-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
