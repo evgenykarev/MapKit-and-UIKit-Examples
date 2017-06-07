@@ -18,7 +18,7 @@ Application for using MapKit, UIKit and Firebase frameworks
 
 ```
 $ git clone https://github.com/evgenykarev/MapKit-and-UIKit-Examples.git
-$ cd MapPoints
+$ cd MapKit-and-UIKit-Examples
 $ pod install
 $ open MapPoints.xcworkspace
 ```
