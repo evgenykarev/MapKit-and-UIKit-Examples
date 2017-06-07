@@ -1,5 +1,5 @@
 //
-//  MKCashedTileOverlay.swift
+//  MKCachedTileOverlay.swift
 //  MapPoints
 //
 //  Created by Evgeny Karev on 15.05.17.
@@ -8,7 +8,7 @@
 
 import MapKit
 
-class MKCashedTileOverlay: MKTileOverlay {
+class MKCachedTileOverlay: MKTileOverlay {
     class var mapName: String {
         return "maps"
     }

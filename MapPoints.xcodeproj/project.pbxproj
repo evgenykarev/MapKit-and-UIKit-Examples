@@ -18,7 +18,7 @@
 		5C2B677B1EB1FEE8006CF9A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2B677A1EB1FEE8006CF9A5 /* Assets.xcassets */; };
 		5C2B677E1EB1FEE8006CF9A5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2B677C1EB1FEE8006CF9A5 /* LaunchScreen.storyboard */; };
 		5C2B67881EB20098006CF9A5 /* MainMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C2B67871EB20098006CF9A5 /* MainMapViewController.xib */; };
-		5C51597B1ECA096A0034C8AB /* MKCashedTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C51597A1ECA096A0034C8AB /* MKCashedTileOverlay.swift */; };
+		5C51597B1ECA096A0034C8AB /* MKCachedTileOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C51597A1ECA096A0034C8AB /* MKCachedTileOverlay.swift */; };
 		5C73DC2D1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */; };
 		5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */; };
 		5C78BBCE1EE016580037D483 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C78BBCD1EE016580037D483 /* UIImage.swift */; };
@@ -48,7 +48,7 @@
 		5C2B677D1EB1FEE8006CF9A5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C2B677F1EB1FEE8006CF9A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C2B67871EB20098006CF9A5 /* MainMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMapViewController.xib; sourceTree = "<group>"; };
-		5C51597A1ECA096A0034C8AB /* MKCashedTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCashedTileOverlay.swift; sourceTree = "<group>"; };
+		5C51597A1ECA096A0034C8AB /* MKCachedTileOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKCachedTileOverlay.swift; sourceTree = "<group>"; };
 		5C73DC2C1EC5F42B005FDC2E /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		5C78BBCB1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKAnnotationViewWithIcon.swift; sourceTree = "<group>"; };
 		5C78BBCD1EE016580037D483 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -155,7 +155,7 @@
 		5C5159791ECA094A0034C8AB /* MKTileOverlay */ = {
 			isa = PBXGroup;
 			children = (
-				5C51597A1ECA096A0034C8AB /* MKCashedTileOverlay.swift */,
+				5C51597A1ECA096A0034C8AB /* MKCachedTileOverlay.swift */,
 				5CD630CD1ECB47660038B518 /* MKOSMTileOverlay.swift */,
 			);
 			name = MKTileOverlay;
@@ -352,7 +352,7 @@
 				5CF935E11EE811AC00316691 /* GeoFire.swift in Sources */,
 				5C78BBCC1EDF3F490037D483 /* MKAnnotationViewWithIcon.swift in Sources */,
 				5CD337531EE6CC5300CB493B /* MapPoint.swift in Sources */,
-				5C51597B1ECA096A0034C8AB /* MKCashedTileOverlay.swift in Sources */,
+				5C51597B1ECA096A0034C8AB /* MKCachedTileOverlay.swift in Sources */,
 				5CD337561EE6EAF100CB493B /* MapPointFirebaseManager.swift in Sources */,
 				5CE95C781EC38DD400277550 /* PercentAnimator.swift in Sources */,
 				5C24A6841EC4710800DA4C9C /* CLPlacemark.swift in Sources */,

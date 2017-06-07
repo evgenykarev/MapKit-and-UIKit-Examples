@@ -8,7 +8,7 @@
 
 import MapKit
 
-class MKOSMTileOverlay: MKCashedTileOverlay {
+class MKOSMTileOverlay: MKCachedTileOverlay {
     override class var mapName: String {
         return "OSM"
     }
